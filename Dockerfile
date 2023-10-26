@@ -19,6 +19,7 @@ RUN ./webui.sh -f can_run_as_root --exit --skip-torch-cuda-test
 
 ENV VIRTUAL_ENV=/stable-diffusion-webui/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ENV no_proxy="localhost, 127.0.0.1, ::1"
 
 RUN timeout 30 python3 launch.py --listen --skip-torch-cuda-test --no-half || true
 
