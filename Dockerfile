@@ -12,6 +12,7 @@ RUN git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
 cd stable-diffusion-webui && git checkout v1.6.0
 
 COPY --from=model /data/v1-5-pruned-emaonly.safetensors /stable-diffusion-webui/models/Stable-diffusion/
+COPY --from=model /root/.cache/huggingface /root/.cache/huggingface
 
 WORKDIR /stable-diffusion-webui/
 
@@ -19,8 +20,5 @@ RUN ./webui.sh -f can_run_as_root --exit --skip-torch-cuda-test
 
 ENV VIRTUAL_ENV=/stable-diffusion-webui/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-ENV no_proxy="localhost, 127.0.0.1, ::1"
-
-RUN timeout 30 python3 launch.py --listen --skip-torch-cuda-test --no-half || true
 
 CMD ["python3", "launch.py", "--listen --skip-torch-cuda-test --no-half"]
